@@ -1,47 +1,49 @@
 #include <stdio.h>
 #include <string.h>
 
-int is_valid_code(char* code, char* valid_codes[], int size) {
-    for (int i = 0; i < size; i++) {
-        if (strcmp(code, valid_codes[i]) == 0) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 int main() {
-    char input[5];
+    // Define arrays of string literals
+    const char *weighted8421[] = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001"};
+    const char *weighted2421[] = {"0000", "0001", "0010", "0011", "0100", "1011", "1100", "1101", "1110", "1111"};
+    const char *weighted84_2_1[] = {"0000", "0111", "0110", "0101", "0100", "1011", "1010", "1001", "1000", "1111"};
     
-    char* codes_8421[] = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001"};
-    char* codes_2421[] = {"0000", "0001", "0010", "0011", "0100", "1011", "1100", "1101", "1110", "1111"};
-    char* codes_84_2_1[] = {"0000", "0001", "0010", "0011", "0100", "1000", "1001", "1010", "1011", "1100"};
-    
-    int size_8421 = sizeof(codes_8421) / sizeof(codes_8421[0]);
-    int size_2421 = sizeof(codes_2421) / sizeof(codes_2421[0]);
-    int size_84_2_1 = sizeof(codes_84_2_1) / sizeof(codes_84_2_1[0]);
-    
-    printf("Enter a 4-bit binary code: ");
-    scanf("%4s", input);
-    
-    int is_8421 = is_valid_code(input, codes_8421, size_8421);
-    int is_2421 = is_valid_code(input, codes_2421, size_2421);
-    int is_84_2_1 = is_valid_code(input, codes_84_2_1, size_84_2_1);
-    
-    if (is_8421 || is_2421 || is_84_2_1) {
-        printf("The binary code %s is valid in the following formats:\n", input);
-        if (is_8421) {
-            printf("8421\n");
+    char input_str[5];  // Increased size to accommodate null terminator
+    printf("Enter a 4-bit binary string: ");
+    scanf("%4s", input_str);  // Limit input to 4 characters to avoid buffer overflow
+
+    int found = 0;
+
+    // Check in weighted8421
+    for (int i = 0; i < 10; i++) {
+        if (strcmp(weighted8421[i], input_str) == 0) {
+            printf("Present in 8421\n");
+            found = 1;
         }
-        if (is_2421) {
-            printf("2421\n");
-        }
-        if (is_84_2_1) {
-            printf("84-2-1\n");
-        }
-    } else {
-        printf("The binary code %s is not a valid weighted binary code.\n", input);
     }
     
+    // Check in weighted2421
+        for (int i = 0; i < 10; i++) {
+            if (strcmp(weighted2421[i], input_str) == 0) {
+                printf("Present in 2421\n");
+                found = 1;
+                break; // Stop after finding the match
+            }
+        }
+    
+    
+    // Check in weighted84_2_1
+        for (int i = 0; i < 10; i++) {
+            if (strcmp(weighted84_2_1[i], input_str) == 0) {
+                printf("Present in 84-2-1\n");
+                found = 1;
+            }
+        }
+    
+    
+    // If not found in any array
+    if (!found) {
+        printf("Not present in any array\n");
+    }
+
     return 0;
 }
