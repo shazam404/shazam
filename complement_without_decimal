@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+// Function to calculate 9's complement
+double calculate_num_9_complement(int integer_part, double fractional_part) {
+    int num_digits = 0;
+    int temp = integer_part;
+    
+    // Count number of digits in integer part
+    do {
+        num_digits++;
+        temp /= 10;
+    } while (temp > 0);
+
+    // Calculate 9's complement for integer part
+    double num_9_complement = pow(10, num_digits) - 1 - integer_part;
+    
+    // Subtract fractional part, preserving precision
+    return num_9_complement - fractional_part;
+}
+
+// Function to calculate 10's complement
+double calculate_num_10_complement(int integer_part, double fractional_part) {
+    int num_digits = 0;
+    int temp = integer_part;
+    
+    // Count number of digits in integer part
+    do {
+        num_digits++;
+        temp /= 10;
+    } while (temp > 0);
+
+    // Calculate 10's complement for integer part
+    double num_10_complement = pow(10, num_digits) - integer_part;
+    
+    // Subtract fractional part, preserving precision
+    return num_10_complement - fractional_part;
+}
+
+int main() {
+    char number_str[100];
+    double number;
+    int integer_part;
+    double fractional_part;
+
+    // Input the number
+    printf("Enter number: ");
+    scanf("%s", number_str);
+
+    // Convert the input string to a double
+    sscanf(number_str, "%lf", &number);
+
+    // Separate the integer and fractional parts
+    integer_part = (int)number;
+    fractional_part = number - integer_part;
+
+    // Calculate 9's complement
+    double num_9_complement = calculate_num_9_complement(integer_part, fractional_part);
+    
+    // Calculate 10's complement
+    double num_10_complement = calculate_num_10_complement(integer_part, fractional_part);
+
+    // Determine the number of decimal places in the input
+    int decimal_places = 0;
+    char* decimal_point = strchr(number_str, '.');
+    if (decimal_point != NULL) {
+        decimal_places = strlen(decimal_point) - 1;
+    }
+
+    // Print results with the same number of decimal places as the input
+    printf("9's complement of %s: %.*f\n", number_str, decimal_places, num_9_complement);
+    printf("10's complement of %s: %.*f\n", number_str, decimal_places, num_10_complement);
+
+    return 0;
+}
